@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "florida-coi-parser"
+version = "0.1.0"
+description = "Local-first, best-effort extraction of structured data from ACORD 25 certificate PDFs."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "Sourcy" }]
+keywords = ["acord", "certificate of insurance", "coi", "insurance", "pdf", "florida"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Text Processing",
+]
+dependencies = ["PyMuPDF>=1.24,<2.0"]
+
+[project.optional-dependencies]
+ocr = ["pytesseract>=0.3.10", "Pillow>=10"]
+dev = ["pytest>=8.0", "ruff>=0.6", "build>=1.2"]
+
+[project.urls]
+Homepage = "https://github.com/SourcyLabs/florida-coi-parser"
+Documentation = "https://github.com/SourcyLabs/florida-coi-parser#readme"
+Repository = "https://github.com/SourcyLabs/florida-coi-parser"
+Issues = "https://github.com/SourcyLabs/florida-coi-parser/issues"
+
+[project.scripts]
+florida-coi-parser = "florida_coi_parser.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/florida_coi_parser"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]
+ignore = ["E501"]
