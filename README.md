@@ -4,9 +4,11 @@ A local-first Python library and CLI for extracting best-effort structured data 
 
 Every insurance agency and construction company in Florida handles these certificates. This open-source tool reduces manual transcription while keeping documents local and private.
 
-> **Sponsored by [Sourcy](https://sourcyinc.com/)**
->
-> Sourcy builds AI and automation tools that eliminate manual data entry in complex industries.
+## Built by Sourcy
+
+This project is built and maintained by **[Sourcy](https://sourcyinc.com/)**.
+
+Sourcy builds AI and automation tools that eliminate manual data entry in complex industries like insurance and construction. If your team handles hundreds of certificates, quotes, or submissions, [visit sourcyinc.com](https://sourcyinc.com/) to see how we automate the workflow.
 
 ## Important Disclaimers
 
