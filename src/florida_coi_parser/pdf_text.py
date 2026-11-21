@@ -5,7 +5,10 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Union
 
-import fitz
+try:
+    import pymupdf
+except ModuleNotFoundError:  # Older PyMuPDF releases use the legacy module name.
+    import fitz as pymupdf
 
 from .exceptions import DocumentLimitError, InvalidPdfError, OcrUnavailableError
 
@@ -13,12 +16,12 @@ MAX_BYTES = 25 * 1024 * 1024
 MAX_PAGES = 20
 
 
-def _open_document(data: bytes) -> fitz.Document:
+def _open_document(data: bytes) -> pymupdf.Document:
     if not data.startswith(b"%PDF"):
         raise InvalidPdfError("Input does not begin with a PDF signature.")
     try:
-        document = fitz.open(stream=data, filetype="pdf")
-    except (fitz.FileDataError, RuntimeError, ValueError) as exc:
+        document = pymupdf.open(stream=data, filetype="pdf")
+    except (pymupdf.FileDataError, RuntimeError, ValueError) as exc:
         raise InvalidPdfError("Input could not be opened as a PDF.") from exc
     if document.page_count > MAX_PAGES:
         document.close()
@@ -54,20 +57,20 @@ def extract_text(data: bytes, *, enable_ocr: bool = False) -> str:
         document.close()
 
 
-def _ocr_document(document: fitz.Document) -> str:
+def _ocr_document(document: pymupdf.Document) -> str:
     """Run caller-requested OCR locally, without a cloud service or document persistence."""
     try:
         import pytesseract  # type: ignore[import-not-found]
         from PIL import Image  # type: ignore[import-not-found]
     except ImportError as exc:
         raise OcrUnavailableError(
-            "OCR requires the optional dependencies: pip install florida-coi-parser[ocr] "
-            "and a local Tesseract installation."
+            'OCR requires a local Tesseract installation and the OCR extra. '
+            'From the repository checkout, run pip install -e ".[ocr]".'
         ) from exc
 
     text_pages: list[str] = []
     for page in document:
-        pixmap = page.get_pixmap(matrix=fitz.Matrix(2, 2), alpha=False)
+        pixmap = page.get_pixmap(matrix=pymupdf.Matrix(2, 2), alpha=False)
         image = Image.frombytes("RGB", (pixmap.width, pixmap.height), pixmap.samples)
         text_pages.append(pytesseract.image_to_string(image))
     return "\n".join(text_pages).strip()

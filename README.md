@@ -1,34 +1,57 @@
 # florida-coi-parser
 
-A local-first Python library and CLI for extracting best-effort structured data from ACORD 25 Certificate of Liability Insurance PDFs.
+Local Python CLI for best-effort field extraction from ACORD 25 certificate PDFs
 
 Every insurance agency and construction company in Florida handles these certificates. This open-source tool reduces manual transcription while keeping documents local and private.
 
-## Built by Sourcy
+## Installation
 
-This project is built and maintained by **[Sourcy](https://sourcyinc.com/)**.
+Clone the repository and install from the checkout with Python 3.9 or later.
 
-Sourcy builds AI and automation tools that eliminate manual data entry in complex industries like insurance and construction. If your team handles hundreds of certificates, quotes, or submissions, [visit sourcyinc.com](https://sourcyinc.com/) to see how we automate the workflow.
+```bash
+git clone https://github.com/SourcyLab/florida-coi-parser.git
+cd florida-coi-parser
+pip install -e .
+```
+
+PyPI status is **not yet published**.
+
+To enable optional local OCR for scanned certificates, install the `ocr` extra and ensure [Tesseract](https://github.com/tesseract-ocr/tesseract) is installed on your system.
+
+```bash
+pip install -e ".[ocr]"
+```
+
+## Quickstart
+
+From the repository root, parse the [synthetic sample PDF](examples/sample-coi.pdf).
+
+```bash
+florida-coi-parser examples/sample-coi.pdf --pretty
+```
+
+The command prints JSON to stdout, with extraction warnings in the `warnings` array. The original sample is labeled “SYNTHETIC SAMPLE - not an ACORD form,” so the form identifier warning is expected. See the [full expected JSON](examples/sample-output.json) or the excerpt below.
+
+```json
+{
+  "certificate_number": "SAMPLE-COI-001",
+  "form_type": null,
+  "warnings": [
+    "Extracted values are best-effort text transcription, not a determination of coverage, endorsements, authenticity, cancellation, or compliance.",
+    "The expected ACORD 25 identifier was not found; review the document type."
+  ]
+}
+```
+
+![Terminal output for the synthetic certificate](docs/screenshot.png)
+
+Regenerate the PDF with `python examples/make_sample.py`.
 
 ## Important Disclaimers
 
 1. **Not Legal or Insurance Advice:** This is a data-extraction utility. It does not determine coverage, endorsements, certificate authenticity, cancellation status, or regulatory compliance. You must evaluate coverage against actual policies and endorsements using qualified professionals.
 2. **ACORD Licensing:** ACORD states that users must be licensed by ACORD to use ACORD Forms. This library parses documents you supply; it does not generate, distribute, or bundle ACORD forms. You are responsible for securing the necessary permissions for the documents you process.
 3. **Local First:** This library operates entirely locally. It makes no network requests, includes no telemetry, and does not persist your documents.
-
-## Installation
-
-Install the library from PyPI (or locally):
-
-```bash
-pip install florida-coi-parser
-```
-
-To enable optional local OCR for scanned certificates, install the `ocr` extra and ensure [Tesseract](https://github.com/tesseract-ocr/tesseract) is installed on your system:
-
-```bash
-pip install "florida-coi-parser[ocr]"
-```
 
 ## Command-Line Usage
 
@@ -87,22 +110,24 @@ The parser uses a conservative, anchor-driven strategy:
 
 ## Development
 
-Clone the repository and install the development dependencies:
+From the checkout, install the development dependencies.
 
 ```bash
-git clone https://github.com/SourcyLabs/florida-coi-parser.git
-cd florida-coi-parser
 pip install -e ".[dev]"
 ```
 
 Run the tests and lint checks:
 
 ```bash
-pytest
+python -m pytest
 ruff check src tests
 ```
 
-To protect user privacy and respect form intellectual property, the test suite uses only synthetic, generated text fixtures. **Do not commit real certificates or proprietary form templates to this repository.**
+The test suite uses only synthetic text and PDF fixtures. **Do not commit real certificates or proprietary form templates to this repository.**
+
+## Built by Sourcy
+
+Sourcy builds automation tools for insurance and construction teams. [Explore the Sitework document workflow demo](https://sourcyinc.com/demo/sitework?utm_source=github&utm_medium=referral&utm_campaign=oss_launch&utm_content=florida-coi-parser).
 
 ## License
 

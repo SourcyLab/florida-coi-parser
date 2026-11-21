@@ -47,4 +47,5 @@ coverage.xml
 research/
 .private_validation/
 *.pdf
+!/examples/sample-coi.pdf
 *.txt
