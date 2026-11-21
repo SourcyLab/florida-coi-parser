@@ -142,6 +142,25 @@ def test_parse_pdf_and_cli_write_json(tmp_path: Path, capsys: pytest.CaptureFixt
     assert parsed_json["raw_text"] is None
 
 
+def test_parse_quickstart_sample() -> None:
+    examples = Path(__file__).resolve().parents[1] / "examples"
+    result = parse_acord25(examples / "sample-coi.pdf")
+
+    assert result.certificate_number == "SAMPLE-COI-001"
+    assert result.certificate_date == "2026-06-15"
+    assert result.insured.name == "Synthetic Sample Contractor"
+    assert result.certificate_holder.name == "Synthetic Sample Project Owner"
+    assert len(result.coverages) == 1
+    coverage = result.coverages[0]
+    assert coverage.policy_number == "SAMPLE-GL-001"
+    assert coverage.effective_date == "2026-07-01"
+    assert coverage.expiration_date == "2027-07-01"
+    assert coverage.limits["each_occurrence"] == "1000000"
+    assert result.form_type is None
+    assert "The expected ACORD 25 identifier was not found; review the document type." in result.warnings
+    assert result.to_dict() == json.loads((examples / "sample-output.json").read_text(encoding="utf-8"))
+
+
 def test_invalid_pdf_is_rejected() -> None:
     with pytest.raises(InvalidPdfError):
         parse_acord25_bytes = b"not a pdf"

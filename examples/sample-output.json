@@ -1,0 +1,58 @@
+{
+  "authorized_representative": null,
+  "certificate_date": "2026-06-15",
+  "certificate_holder": {
+    "address": [],
+    "email": null,
+    "fax": null,
+    "name": "Synthetic Sample Project Owner",
+    "phone": null
+  },
+  "certificate_number": "SAMPLE-COI-001",
+  "confidence": 0.75,
+  "coverages": [
+    {
+      "effective_date": "2026-07-01",
+      "expiration_date": "2027-07-01",
+      "flags": {},
+      "kind": "commercial_general_liability",
+      "limits": {
+        "each_occurrence": "1000000",
+        "general_aggregate": "2000000"
+      },
+      "policy_number": "SAMPLE-GL-001",
+      "raw_text": null
+    }
+  ],
+  "description_of_operations": "Fictional project used to demonstrate local PDF parsing.",
+  "form_edition": null,
+  "form_type": null,
+  "insured": {
+    "address": [],
+    "email": null,
+    "fax": null,
+    "name": "Synthetic Sample Contractor",
+    "phone": null
+  },
+  "insurers": [
+    {
+      "letter": "A",
+      "naic": null,
+      "name": "Synthetic Sample Insurer"
+    }
+  ],
+  "producer": {
+    "address": [],
+    "email": "certificates@example.test",
+    "fax": null,
+    "name": "Synthetic Sample Brokerage",
+    "phone": null
+  },
+  "raw_text": null,
+  "revision_number": null,
+  "unparsed_sections": [],
+  "warnings": [
+    "Extracted values are best-effort text transcription, not a determination of coverage, endorsements, authenticity, cancellation, or compliance.",
+    "The expected ACORD 25 identifier was not found; review the document type."
+  ]
+}
